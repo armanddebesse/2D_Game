@@ -7,6 +7,7 @@ import java.awt.Graphics2D;
 
 import javax.swing.JPanel;
 
+import Tile.TileManager;
 import entity.Player;
 
 public class GamePanel extends JPanel implements Runnable{
@@ -23,6 +24,7 @@ public class GamePanel extends JPanel implements Runnable{
 	// FPS
 	int FPS = 120;
 	
+	TileManager tileManager = new TileManager(this);
 	KeyHandler keyHandler = new KeyHandler();
 	Thread gameThread;
 	Player player = new Player(this, keyHandler);
@@ -68,7 +70,7 @@ public class GamePanel extends JPanel implements Runnable{
 	public void paintComponent(Graphics graph) {
 		super.paintComponent(graph);
 		Graphics2D graph2D = (Graphics2D)graph;
-		
+		tileManager.draw(graph2D);
 		player.draw(graph2D);
 		
 		graph2D.dispose();
