@@ -92,10 +92,10 @@ public class TileManager {
 			double screenX = worldX - gamePanel.player.worldX + gamePanel.player.screenX;
 			double screenY = worldY - gamePanel.player.worldY + gamePanel.player.screenY;
 			
-			if(worldX + gamePanel.tileSize > gamePanel.player.worldX - gamePanel.player.screenX &&
-					worldX - gamePanel.tileSize < gamePanel.player.worldX + gamePanel.player.screenX &&
-					worldY + gamePanel.tileSize > gamePanel.player.worldY - gamePanel.player.screenY &&
-					worldY - gamePanel.tileSize < gamePanel.player.worldY + gamePanel.player.screenY) {
+			if (worldX + gamePanel.tileSize > gamePanel.player.worldX - gamePanel.player.screenX &&
+				worldX - gamePanel.tileSize < gamePanel.player.worldX + gamePanel.player.screenX &&
+				worldY + gamePanel.tileSize > gamePanel.player.worldY - gamePanel.player.screenY &&
+				worldY - gamePanel.tileSize < gamePanel.player.worldY + gamePanel.player.screenY) {
 				
 				g2.drawImage(tile[tileNum].image, (int)screenX, (int)screenY, gamePanel.tileSize, gamePanel.tileSize, null);
 			}

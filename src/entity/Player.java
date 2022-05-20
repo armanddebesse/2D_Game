@@ -17,6 +17,7 @@ public class Player extends Entity{
 	
 	public final int screenX;
 	public final int screenY;
+	int hasKey = 0;
 	
 	public Player(GamePanel gamePanel, KeyHandler keyHandler) {
 		this.gamePanel = gamePanel;
@@ -28,6 +29,8 @@ public class Player extends Entity{
 		solidArea = new Rectangle();
 		solidArea.x = 8;
 		solidArea.y = 16;
+		solidAreaDefaultX = solidArea.x;
+		solidAreaDefaultY = solidArea.y;
 		solidArea.width = 32;
 		solidArea.height = 32;
 		
@@ -60,22 +63,41 @@ public class Player extends Entity{
 	public void update() {
 		if(keyHandler.upPressed || keyHandler.downPressed || keyHandler.leftPressed || keyHandler.rightPressed) {
 
-			if(keyHandler.upPressed) {
+			if(keyHandler.upPressed && !keyHandler.downPressed && !keyHandler.leftPressed && !keyHandler.rightPressed) {
 				direction = Direction.UP;
 			}
-			else if(keyHandler.downPressed) {
+			else if(!keyHandler.upPressed && keyHandler.downPressed && !keyHandler.leftPressed && !keyHandler.rightPressed) {
 				direction = Direction.DOWN;
 			}
-			else if(keyHandler.leftPressed) {
+			else if(!keyHandler.upPressed && !keyHandler.downPressed && keyHandler.leftPressed && !keyHandler.rightPressed) {
 				direction = Direction.LEFT;
 			}
-			else if(keyHandler.rightPressed) {
+			else if(!keyHandler.upPressed && !keyHandler.downPressed && !keyHandler.leftPressed && keyHandler.rightPressed) {
 				direction = Direction.RIGHT;
 			}
+			else if(keyHandler.upPressed && !keyHandler.downPressed && keyHandler.leftPressed && !keyHandler.rightPressed) {
+				direction = Direction.UP_LEFT;
+			}
+			else if(keyHandler.upPressed && !keyHandler.downPressed && !keyHandler.leftPressed && keyHandler.rightPressed) {
+				direction = Direction.UP_RIGHT;
+			}
+			else if(!keyHandler.upPressed && keyHandler.downPressed && keyHandler.leftPressed && !keyHandler.rightPressed) {
+				direction = Direction.DOWN_LEFT;
+			}
+			else if(!keyHandler.upPressed && keyHandler.downPressed && !keyHandler.leftPressed && keyHandler.rightPressed) {
+				direction = Direction.DOWN_RIGHT;
+			}
+			else {;}
 			
+			// CHECK TILE COLLISION
 			collisionOn = false;
 			gamePanel.collisionChecker.checkTile(this);
 			
+			//CHECK OBJECT COLLISION
+			int objIndex = gamePanel.collisionChecker.checkObject(this, true);
+			pickUpObject(objIndex);
+			
+			//IF COLLISION IS FALSE, PLAYER CAN MOVE
 			if(collisionOn == false) {
 				switch(direction) {
 				case UP:
@@ -89,6 +111,22 @@ public class Player extends Entity{
 					break;
 				case RIGHT:
 					worldX += speed;
+					break;
+				case UP_LEFT:
+					worldY -= speed/1.5;
+					worldX -= speed/1.5;
+					break;
+				case UP_RIGHT:
+					worldY -= speed/1.5;
+					worldX += speed/1.5;
+					break;
+				case DOWN_LEFT:
+					worldY += speed/1.5;
+					worldX -= speed/1.5;
+					break;
+				case DOWN_RIGHT:
+					worldY += speed/1.5;
+					worldX += speed/1.5;
 					break;
 				}
 				
@@ -108,9 +146,36 @@ public class Player extends Entity{
 		
 	}
 	
+	public void pickUpObject(int i) {
+		if (i != 999) {
+			String objectName = gamePanel.obj[i].name;
+			switch(objectName) {
+			case "Key":
+			hasKey++;
+				gamePanel.obj[i] = null;
+				break;
+			case "Door":
+				if(hasKey > 0) {
+					gamePanel.obj[i] = null;
+					hasKey--; 
+				}
+				break;
+			
+			}
+		}
+	}
+	
 	public void draw(Graphics2D graph2D) {
 		BufferedImage image = null;
 		switch(direction) {
+		case UP:
+			if(spriteNumber == 1) {
+				image = up1;
+			}
+			else if(spriteNumber == 2) {
+				image = up2;
+			}
+			break;
 		case DOWN:
 			if(spriteNumber == 1) {
 				image = down1;
@@ -135,13 +200,36 @@ public class Player extends Entity{
 				image = right2;
 			}
 			break;
-		case UP:
+		case UP_LEFT:
 			if(spriteNumber == 1) {
-				image = left1;
 				image = up1;
 			}
 			else if(spriteNumber == 2) {
 				image = up2;
+			}
+			break;
+		case UP_RIGHT:
+			if(spriteNumber == 1) {
+				image = up1;
+			}
+			else if(spriteNumber == 2) {
+				image = up2;
+			}
+			break;
+		case DOWN_LEFT:
+			if(spriteNumber == 1) {
+				image = down1;
+			}
+			else if(spriteNumber == 2) {
+				image = down2;
+			}
+			break;
+		case DOWN_RIGHT:
+			if(spriteNumber == 1) {
+				image = down1;
+			}
+			else if(spriteNumber == 2) {
+				image = down2;
 			}
 			break;
 		default:
