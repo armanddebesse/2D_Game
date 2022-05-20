@@ -6,7 +6,12 @@ import java.awt.event.KeyListener;
 public class KeyHandler implements KeyListener{
 	
 	public boolean upPressed, downPressed, leftPressed, rightPressed;
+	
+	GamePanel gamePanel;
 
+	public KeyHandler(GamePanel gamePanel) {
+		this.gamePanel = gamePanel;
+	}
 	@Override
 	public void keyTyped(KeyEvent e) {
 		
@@ -16,6 +21,7 @@ public class KeyHandler implements KeyListener{
 	public void keyPressed(KeyEvent e) {
 		int keyCode = e.getKeyCode();
 		
+		//player movement
 		if(keyCode == KeyEvent.VK_Z) {
 			upPressed = true;
 		}
@@ -27,6 +33,14 @@ public class KeyHandler implements KeyListener{
 		}
 		if(keyCode == KeyEvent.VK_D) {
 			rightPressed = true;
+		}
+		
+		//zoom in/out
+		if(keyCode == KeyEvent.VK_UP) {
+			gamePanel.zoomInOut(1);
+		}
+		if(keyCode == KeyEvent.VK_DOWN) {
+			gamePanel.zoomInOut(-1);
 		}
 	}
 

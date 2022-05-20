@@ -3,6 +3,7 @@ package entity;
 import main.KeyHandler;
 
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
@@ -24,6 +25,12 @@ public class Player extends Entity{
 		screenX = gamePanel.screenWidth/2- (gamePanel.tileSize/2);
 		screenY = gamePanel.screenHeight/2- (gamePanel.tileSize/2);
 		
+		solidArea = new Rectangle();
+		solidArea.x = 8;
+		solidArea.y = 16;
+		solidArea.width = 32;
+		solidArea.height = 32;
+		
 		setDefaultValues();
 		getPlayerImage();
 	}
@@ -31,7 +38,7 @@ public class Player extends Entity{
 	public void setDefaultValues() {
 		worldX = gamePanel.tileSize * 23;
 		worldY = gamePanel.tileSize * 21;
-		speed = 2;
+		speed = gamePanel.worldWidth/1200;
 		direction = Direction.DOWN;
 	}
 	
@@ -55,19 +62,36 @@ public class Player extends Entity{
 
 			if(keyHandler.upPressed) {
 				direction = Direction.UP;
-				worldY -= speed;
 			}
 			else if(keyHandler.downPressed) {
 				direction = Direction.DOWN;
-				worldY += speed;
 			}
 			else if(keyHandler.leftPressed) {
 				direction = Direction.LEFT;
-				worldX -= speed;
 			}
 			else if(keyHandler.rightPressed) {
 				direction = Direction.RIGHT;
-				worldX += speed;
+			}
+			
+			collisionOn = false;
+			gamePanel.collisionChecker.checkTile(this);
+			
+			if(collisionOn == false) {
+				switch(direction) {
+				case UP:
+					worldY -= speed;
+					break;
+				case DOWN:
+					worldY += speed;
+					break;
+				case LEFT:
+					worldX -= speed;
+					break;
+				case RIGHT:
+					worldX += speed;
+					break;
+				}
+				
 			}
 			
 			spriteCounter++;
