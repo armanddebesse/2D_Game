@@ -3,28 +3,38 @@ package entity;
 import main.KeyHandler;
 
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
+import enums.Direction;
 import main.GamePanel;
 
 public class Player extends Entity{
 	GamePanel gamePanel;
 	KeyHandler keyHandler;
 	
+	public final int screenX;
+	public final int screenY;
+	
 	public Player(GamePanel gp, KeyHandler keyH) {
 		this.gamePanel = gp;
 		this.keyHandler = keyH;
+		
+		screenX = gamePanel.screenWidth/2 - gamePanel.tileSize/2;
+		screenY = gamePanel.screenHeight/2 - gamePanel.tileSize/2;
+		
+		solidArea = new Rectangle(8, 16, 32, 32);
 		
 		setDefaultValues();
 		getPlayerImage();
 	}
 	
 	public void setDefaultValues() {
-		x = 100;
-		y = 100;
+		worldX = gamePanel.tileSize * 8;
+		worldY = gamePanel.tileSize * 20;
 		speed = 2;
 		direction = Direction.DOWN;
 	}
@@ -49,19 +59,37 @@ public class Player extends Entity{
 
 			if(keyHandler.upPressed) {
 				direction = Direction.UP;
-				y -= speed;
 			}
 			else if(keyHandler.downPressed) {
 				direction = Direction.DOWN;
-				y += speed;
 			}
 			else if(keyHandler.leftPressed) {
 				direction = Direction.LEFT;
-				x -= speed;
 			}
 			else if(keyHandler.rightPressed) {
 				direction = Direction.RIGHT;
-				x += speed;
+			}
+			
+			//CHECK TILE COLLISION
+			collisionOn = false;
+			gamePanel.collisionHandler.checkTile(this);
+			
+			//IF COLLISION IS FALSE PLAYER CAN MOVE
+			if (!collisionOn) {
+				switch(direction) {
+				case UP:
+					worldY -= speed;
+					break;
+				case DOWN:
+					worldY += speed;
+					break;
+				case LEFT:
+					worldX -= speed;
+					break;
+				case RIGHT:
+					worldX += speed;
+					break;
+				}
 			}
 			
 			spriteCounter++;
@@ -117,6 +145,6 @@ public class Player extends Entity{
 		default:
 			break;
 		}
-		graph2D.drawImage(image, x, y, gamePanel.tileSize, gamePanel.tileSize, null);
+		graph2D.drawImage(image, screenX, screenY, gamePanel.tileSize, gamePanel.tileSize, null);
 	}
 }
