@@ -4,10 +4,12 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.util.Iterator;
 
 import javax.swing.JPanel;
 
 import entity.Player;
+import object.SuperObject;
 import tile.TileManager;
 
 public class GamePanel extends JPanel implements Runnable{
@@ -34,7 +36,9 @@ public class GamePanel extends JPanel implements Runnable{
 	KeyHandler keyHandler = new KeyHandler();
 	Thread gameThread;
 	public CollisionHandler collisionHandler = new CollisionHandler(this);
+	public ObjectHandler objectHandler = new ObjectHandler(this);
 	public Player player = new Player(this, keyHandler);
+	public SuperObject obj[] = new SuperObject[10];
 	
 	public GamePanel() {
 		this.setPreferredSize(new Dimension(screenWidth, screenHeight));
@@ -42,6 +46,10 @@ public class GamePanel extends JPanel implements Runnable{
 		this.setDoubleBuffered(true);
 		this.addKeyListener(keyHandler);
 		this.setFocusable(true);
+	}
+	
+	public void setupGame() {
+		objectHandler.setObject();
 	}
 	
 	public void startGameThread() {
@@ -78,7 +86,17 @@ public class GamePanel extends JPanel implements Runnable{
 		super.paintComponent(graph);
 		Graphics2D graph2D = (Graphics2D)graph;
 		
+		//TILE
 		tileManager.draw(graph2D);
+		
+		//OBJECT
+		for (SuperObject superObject : obj) {
+			if (superObject != null) {
+				superObject.draw(graph2D, this);
+			}
+		}
+		
+		//PLAYER
 		player.draw(graph2D);
 		
 		graph2D.dispose();
