@@ -5,7 +5,7 @@ import java.awt.event.KeyListener;
 
 public class KeyHandler implements KeyListener{
 	
-	public boolean upPressed, downPressed, leftPressed, rightPressed;
+	public boolean upPressed, downPressed, leftPressed, rightPressed, interactPressed;
 	
 	GamePanel gamePanel;
 
@@ -34,13 +34,8 @@ public class KeyHandler implements KeyListener{
 		if(keyCode == KeyEvent.VK_D) {
 			rightPressed = true;
 		}
-		
-		//zoom in/out
-		if(keyCode == KeyEvent.VK_UP) {
-			gamePanel.zoomInOut(1);
-		}
-		if(keyCode == KeyEvent.VK_DOWN) {
-			gamePanel.zoomInOut(-1);
+		if(keyCode == KeyEvent.VK_F) {
+			interactPressed = true;
 		}
 	}
 
@@ -59,6 +54,9 @@ public class KeyHandler implements KeyListener{
 		}
 		if(keyCode == KeyEvent.VK_D) {
 			rightPressed = false;
+		}
+		if(keyCode == KeyEvent.VK_F) {
+			interactPressed = false;
 		}
 		
 	}

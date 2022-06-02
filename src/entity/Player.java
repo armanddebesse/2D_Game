@@ -17,7 +17,7 @@ public class Player extends Entity{
 	
 	public final int screenX;
 	public final int screenY;
-	int hasKey = 0;
+	public int hasKey = 0;
 	
 	public Player(GamePanel gamePanel, KeyHandler keyHandler) {
 		this.gamePanel = gamePanel;
@@ -41,7 +41,7 @@ public class Player extends Entity{
 	public void setDefaultValues() {
 		worldX = gamePanel.tileSize * 23;
 		worldY = gamePanel.tileSize * 21;
-		speed = gamePanel.worldWidth/1200;
+		speed = gamePanel.tileSize * gamePanel.maxWorldCol/1200;
 		direction = Direction.DOWN;
 	}
 	
@@ -61,6 +61,24 @@ public class Player extends Entity{
 	}
 	
 	public void update() {
+		
+		// CHECK TILE COLLISION
+		collisionOn = false;
+		gamePanel.collisionChecker.checkTile(this);
+					
+		// CHECK OBJECT COLLISION
+		int objIndex = gamePanel.collisionChecker.checkObject(this, true);
+					
+		//if (objIndex != 999) {
+		//	gamePanel.ui.showMessage("Press F to interact");
+		//}
+		
+		// INTERACTION
+		if (keyHandler.interactPressed) {
+				pickUpObject(objIndex);
+		}
+		
+		// MOVEMENT
 		if(keyHandler.upPressed || keyHandler.downPressed || keyHandler.leftPressed || keyHandler.rightPressed) {
 
 			if(keyHandler.upPressed && !keyHandler.downPressed && !keyHandler.leftPressed && !keyHandler.rightPressed) {
@@ -89,13 +107,6 @@ public class Player extends Entity{
 			}
 			else {;}
 			
-			// CHECK TILE COLLISION
-			collisionOn = false;
-			gamePanel.collisionChecker.checkTile(this);
-			
-			//CHECK OBJECT COLLISION
-			int objIndex = gamePanel.collisionChecker.checkObject(this, true);
-			pickUpObject(objIndex);
 			
 			//IF COLLISION IS FALSE, PLAYER CAN MOVE
 			if(collisionOn == false) {
@@ -151,16 +162,32 @@ public class Player extends Entity{
 			String objectName = gamePanel.obj[i].name;
 			switch(objectName) {
 			case "Key":
-			hasKey++;
+				gamePanel.playSE(1);
+				hasKey++;
 				gamePanel.obj[i] = null;
+				gamePanel.ui.showMessage("You got the key!");
 				break;
 			case "Door":
 				if(hasKey > 0) {
-					gamePanel.obj[i] = null;
+					gamePanel.playSE(3);
 					hasKey--; 
+					gamePanel.obj[i] = null;
+					gamePanel.ui.showMessage("You opened the door!");
+				} else {
+					gamePanel.ui.showMessage("You need a key!");
 				}
 				break;
-			
+			case "Boots":
+				gamePanel.playSE(2);
+				speed += 1;
+				gamePanel.obj[i] = null;
+				gamePanel.ui.showMessage("Speed up!");
+				break;
+			case "Chest":
+				gamePanel.ui.gameFinished = true;
+				gamePanel.stopMusic();
+				gamePanel.playSE(4);
+
 			}
 		}
 	}
