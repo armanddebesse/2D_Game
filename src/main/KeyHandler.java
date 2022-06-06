@@ -37,6 +37,13 @@ public class KeyHandler implements KeyListener{
 		if(keyCode == KeyEvent.VK_F) {
 			interactPressed = true;
 		}
+		if(keyCode == KeyEvent.VK_P) {
+			if (gamePanel.gameState == gamePanel.playState) {
+				gamePanel.gameState = gamePanel.pauseState;
+			} else if (gamePanel.gameState == gamePanel.pauseState) {
+				gamePanel.gameState = gamePanel.playState;				
+			}
+		}
 	}
 
 	@Override

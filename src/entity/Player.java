@@ -1,6 +1,7 @@
 package entity;
 
 import main.KeyHandler;
+import main.UtilityTool;
 
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
@@ -9,6 +10,7 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
+import Tile.Tile;
 import main.GamePanel;
 
 public class Player extends Entity{
@@ -46,18 +48,26 @@ public class Player extends Entity{
 	}
 	
 	public void getPlayerImage() {
+		up1 = setup("boy_up_1");
+		up2 = setup("boy_up_2");
+		down1 = setup("boy_down_1");
+		down2 = setup("boy_down_2");
+		right1 = setup("boy_right_1");
+		right2 = setup("boy_right_2");
+		left1 = setup("boy_left_1");
+		left2 = setup("boy_left_2");
+	}
+	
+	public BufferedImage setup(String imagePath) {
+		UtilityTool uTool = new UtilityTool();
+		BufferedImage image = null;
 		try {
-			up1 = ImageIO.read(getClass().getResourceAsStream("/player/boy_up_1.png"));
-			up2 = ImageIO.read(getClass().getResourceAsStream("/player/boy_up_2.png"));
-			down1 = ImageIO.read(getClass().getResourceAsStream("/player/boy_down_1.png"));
-			down2 = ImageIO.read(getClass().getResourceAsStream("/player/boy_down_2.png"));
-			right1 = ImageIO.read(getClass().getResourceAsStream("/player/boy_right_1.png"));
-			right2 = ImageIO.read(getClass().getResourceAsStream("/player/boy_right_2.png"));
-			left1 = ImageIO.read(getClass().getResourceAsStream("/player/boy_left_1.png"));
-			left2 = ImageIO.read(getClass().getResourceAsStream("/player/boy_left_2.png"));
-		}catch(IOException e) {
+			image = ImageIO.read(getClass().getResourceAsStream("/player/"+imagePath+".png"));
+			image = uTool.scaleImage(image, gamePanel.tileSize, gamePanel.tileSize);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		return image;
 	}
 	
 	public void update() {
@@ -68,10 +78,6 @@ public class Player extends Entity{
 					
 		// CHECK OBJECT COLLISION
 		int objIndex = gamePanel.collisionChecker.checkObject(this, true);
-					
-		//if (objIndex != 999) {
-		//	gamePanel.ui.showMessage("Press F to interact");
-		//}
 		
 		// INTERACTION
 		if (keyHandler.interactPressed) {
@@ -262,6 +268,6 @@ public class Player extends Entity{
 		default:
 			break;
 		}
-		graph2D.drawImage(image, screenX, screenY, gamePanel.tileSize, gamePanel.tileSize, null);
+		graph2D.drawImage(image, screenX, screenY, null);
 	}
 }
