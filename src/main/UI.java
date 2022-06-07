@@ -1,9 +1,9 @@
 package main;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
-import java.awt.PageAttributes.OriginType;
 import java.awt.image.BufferedImage;
 import java.text.DecimalFormat;
 
@@ -18,6 +18,7 @@ public class UI {
 	public String message = "";
 	int messagecounter = 0;
 	public Boolean gameFinished = false;
+	public String currentDialogue;
 	
 	double playTime;
 	DecimalFormat dFormat = new DecimalFormat("#0.00");
@@ -42,14 +43,48 @@ public class UI {
 		if (gameFinished) {
 			drawFinishedScreen();
 		}else {
+			// PLAY STATE
 			if (gamePanel.gameState == gamePanel.playState) {
 				playTime += (double)1/120;
 				// Do playstate stuff later
 			}
+			// PAUSE STATE
 			if (gamePanel.gameState == gamePanel.pauseState) {
 				drawPauseScreen();
 			}
+			// DIALOGUE STATE
+			if (gamePanel.gameState == gamePanel.dialogueState) {
+				drawDialogueScreen();
+			}
 		}
+	}
+
+	private void drawDialogueScreen() {
+		// WINDOW
+		int x = gamePanel.tileSize*2;
+		int y = gamePanel.tileSize;
+		int width = gamePanel.screenWidth - (gamePanel.tileSize*5);
+		int height= gamePanel.screenHeight- (gamePanel.tileSize*10);
+		
+		drawSubWindow(x, y, width, height);
+		
+		graph2D.setFont(graph2D.getFont().deriveFont(Font.PLAIN,28F));
+		x+= gamePanel.tileSize;
+		y+= gamePanel.tileSize;
+		
+		for (String line : currentDialogue.split("\n")) {			
+			graph2D.drawString(line, x, y);
+			y+=40;
+		}
+	}
+
+	private void drawSubWindow(int x, int y, int width, int height) {
+		Color color = new Color(0,0,0,200);
+		graph2D.setColor(color);
+		graph2D.fillRoundRect(x,y,width,height,35,35);
+		graph2D.setColor(Color.white);
+		graph2D.setStroke(new BasicStroke(5));
+		graph2D.drawRoundRect(x+5,y+5,width-10,height-10,25,25);
 	}
 
 	private void drawFinishedScreen() {

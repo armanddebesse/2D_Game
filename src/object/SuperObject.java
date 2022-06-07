@@ -17,7 +17,7 @@ public class SuperObject {
 	public int solidDefaultAreaY = 0;
 	UtilityTool uTool = new UtilityTool();
 	
-	public void draw(Graphics2D g2, GamePanel gamePanel) {
+	public void draw(Graphics2D graph2D, GamePanel gamePanel) {
 		double screenX = worldX - gamePanel.player.worldX + gamePanel.player.screenX;
 		double screenY = worldY - gamePanel.player.worldY + gamePanel.player.screenY;
 		
@@ -26,7 +26,7 @@ public class SuperObject {
 			worldY + gamePanel.tileSize > gamePanel.player.worldY - gamePanel.player.screenY &&
 			worldY - gamePanel.tileSize < gamePanel.player.worldY + gamePanel.player.screenY) {
 			
-			g2.drawImage(image, (int)screenX, (int)screenY, gamePanel.tileSize, gamePanel.tileSize, null);
+			graph2D.drawImage(image, (int)screenX, (int)screenY, gamePanel.tileSize, gamePanel.tileSize, null);
 		}
 	}
 }

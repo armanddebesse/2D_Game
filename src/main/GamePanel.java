@@ -4,10 +4,12 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.util.Iterator;
 
 import javax.swing.JPanel;
 
 import Tile.TileManager;
+import entity.Entity;
 import entity.Player;
 import object.SuperObject;
 
@@ -32,7 +34,7 @@ public class GamePanel extends JPanel implements Runnable{
 	
 	// SYSTEM
 	TileManager tileManager = new TileManager(this);
-	KeyHandler keyHandler = new KeyHandler(this);
+	public KeyHandler keyHandler = new KeyHandler(this);
 	Sound music =  new Sound();
 	Sound soundEffect =  new Sound();
 	public CollisionChecker collisionChecker = new CollisionChecker(this);
@@ -43,11 +45,13 @@ public class GamePanel extends JPanel implements Runnable{
 	// ENTITY AND OBJECT
 	public Player player = new Player(this, keyHandler);
 	public SuperObject obj[] = new SuperObject[10];
+	public  Entity npc[] = new Entity[10];
 	
 	// GAME STATE
 	public int gameState;
 	public final int playState = 1;
 	public final int pauseState = 2;
+	public final int dialogueState = 3;
 	
 	public GamePanel() {
 		this.setPreferredSize(new Dimension(screenWidth, screenHeight));
@@ -59,6 +63,7 @@ public class GamePanel extends JPanel implements Runnable{
 	
 	public void setupGame() {
 		assetSetter.setObject();
+		assetSetter.setNPC();
 		playMusic(0);
 		gameState = playState;
 	}
@@ -91,7 +96,15 @@ public class GamePanel extends JPanel implements Runnable{
 	
 	public void update() {
 		if (gameState == playState) {
-			player.update();			
+			// PLAYER
+			player.update();
+			
+			// NPC
+			for (int i = 0; i < npc.length; i++) {
+				if (npc[i]!=null) {
+					npc[i].update();
+				}
+			}	
 		}
 		if (gameState == pauseState) {
 			//nothing
@@ -116,6 +129,14 @@ public class GamePanel extends JPanel implements Runnable{
 		// PLAYER
 		player.draw(graph2D);
 
+		
+		// NPC
+		for (int i = 0; i < npc.length; i++) {
+			if (npc[i]!=null) {
+				npc[i].draw(graph2D);
+			}
+		}
+		
 		// UI
 		ui.draw(graph2D);
 		

@@ -1,20 +1,14 @@
 package entity;
 
 import main.KeyHandler;
-import main.UtilityTool;
 
-import java.awt.Graphics2D;
 import java.awt.Rectangle;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
 
-import javax.imageio.ImageIO;
+import javax.swing.event.ListDataEvent;
 
-import Tile.Tile;
 import main.GamePanel;
 
 public class Player extends Entity{
-	GamePanel gamePanel;
 	KeyHandler keyHandler;
 	
 	public final int screenX;
@@ -22,7 +16,8 @@ public class Player extends Entity{
 	public int hasKey = 0;
 	
 	public Player(GamePanel gamePanel, KeyHandler keyHandler) {
-		this.gamePanel = gamePanel;
+		super(gamePanel);
+		
 		this.keyHandler = keyHandler;
 		
 		screenX = gamePanel.screenWidth/2- (gamePanel.tileSize/2);
@@ -37,7 +32,7 @@ public class Player extends Entity{
 		solidArea.height = 32;
 		
 		setDefaultValues();
-		getPlayerImage();
+		getImage();
 	}
 	
 	public void setDefaultValues() {
@@ -47,27 +42,15 @@ public class Player extends Entity{
 		direction = Direction.DOWN;
 	}
 	
-	public void getPlayerImage() {
-		up1 = setup("boy_up_1");
-		up2 = setup("boy_up_2");
-		down1 = setup("boy_down_1");
-		down2 = setup("boy_down_2");
-		right1 = setup("boy_right_1");
-		right2 = setup("boy_right_2");
-		left1 = setup("boy_left_1");
-		left2 = setup("boy_left_2");
-	}
-	
-	public BufferedImage setup(String imagePath) {
-		UtilityTool uTool = new UtilityTool();
-		BufferedImage image = null;
-		try {
-			image = ImageIO.read(getClass().getResourceAsStream("/player/"+imagePath+".png"));
-			image = uTool.scaleImage(image, gamePanel.tileSize, gamePanel.tileSize);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return image;
+	public void getImage() {
+		up1 = setup("/player/boy_up_1");
+		up2 = setup("/player/boy_up_2");
+		down1 = setup("/player/boy_down_1");
+		down2 = setup("/player/boy_down_2");
+		right1 = setup("/player/boy_right_1");
+		right2 = setup("/player/boy_right_2");
+		left1 = setup("/player/boy_left_1");
+		left2 = setup("/player/boy_left_2");
 	}
 	
 	public void update() {
@@ -79,10 +62,13 @@ public class Player extends Entity{
 		// CHECK OBJECT COLLISION
 		int objIndex = gamePanel.collisionChecker.checkObject(this, true);
 		
+		// CHECK NPC COLLISION
+		int npcIndex = gamePanel.collisionChecker.checkEntity(this, gamePanel.npc);
+		
 		// INTERACTION
-		if (keyHandler.interactPressed) {
-				pickUpObject(objIndex);
-		}
+		
+		pickUpObject(objIndex);
+		interactNPC(npcIndex);
 		
 		// MOVEMENT
 		if(keyHandler.upPressed || keyHandler.downPressed || keyHandler.leftPressed || keyHandler.rightPressed) {
@@ -117,36 +103,15 @@ public class Player extends Entity{
 			//IF COLLISION IS FALSE, PLAYER CAN MOVE
 			if(collisionOn == false) {
 				switch(direction) {
-				case UP:
-					worldY -= speed;
-					break;
-				case DOWN:
-					worldY += speed;
-					break;
-				case LEFT:
-					worldX -= speed;
-					break;
-				case RIGHT:
-					worldX += speed;
-					break;
-				case UP_LEFT:
-					worldY -= speed/1.5;
-					worldX -= speed/1.5;
-					break;
-				case UP_RIGHT:
-					worldY -= speed/1.5;
-					worldX += speed/1.5;
-					break;
-				case DOWN_LEFT:
-					worldY += speed/1.5;
-					worldX -= speed/1.5;
-					break;
-				case DOWN_RIGHT:
-					worldY += speed/1.5;
-					worldX += speed/1.5;
-					break;
-				}
-				
+				case UP:worldY -= speed;break;
+				case DOWN:worldY += speed;break;
+				case LEFT:worldX -= speed;break;
+				case RIGHT:worldX += speed;break;
+				case UP_LEFT:worldY -= speed/1.5;worldX -= speed/1.5;break;
+				case UP_RIGHT:worldY -= speed/1.5;worldX += speed/1.5;break;
+				case DOWN_LEFT:worldY += speed/1.5;worldX -= speed/1.5;break;
+				case DOWN_RIGHT:worldY += speed/1.5;worldX += speed/1.5;break;
+				}	
 			}
 			
 			spriteCounter++;
@@ -165,109 +130,47 @@ public class Player extends Entity{
 	
 	public void pickUpObject(int i) {
 		if (i != 999) {
-			String objectName = gamePanel.obj[i].name;
-			switch(objectName) {
-			case "Key":
-				gamePanel.playSE(1);
-				hasKey++;
-				gamePanel.obj[i] = null;
-				gamePanel.ui.showMessage("You got the key!");
-				break;
-			case "Door":
-				if(hasKey > 0) {
-					gamePanel.playSE(3);
-					hasKey--; 
+			if (keyHandler.interactPressed) {
+				String objectName = gamePanel.obj[i].name;
+				switch(objectName) {
+				case "Key":
+					gamePanel.playSE(1);
+					hasKey++;
 					gamePanel.obj[i] = null;
-					gamePanel.ui.showMessage("You opened the door!");
-				} else {
-					gamePanel.ui.showMessage("You need a key!");
-				}
-				break;
-			case "Boots":
-				gamePanel.playSE(2);
-				speed += 1;
-				gamePanel.obj[i] = null;
-				gamePanel.ui.showMessage("Speed up!");
-				break;
-			case "Chest":
-				gamePanel.ui.gameFinished = true;
-				gamePanel.stopMusic();
-				gamePanel.playSE(4);
+					gamePanel.ui.showMessage("You got the key!");
+					break;
+				case "Door":
+					if(hasKey > 0) {
+						gamePanel.playSE(3);
+						hasKey--; 
+						gamePanel.obj[i] = null;
+						gamePanel.ui.showMessage("You opened the door!");
+					} else {
+						gamePanel.ui.showMessage("You need a key!");
+					}
+					break;
+				case "Boots":
+					gamePanel.playSE(2);
+					speed += 1;
+					gamePanel.obj[i] = null;
+					gamePanel.ui.showMessage("Speed up!");
+					break;
+				case "Chest":
+					gamePanel.ui.gameFinished = true;
+					gamePanel.stopMusic();
+					gamePanel.playSE(4);
 
+				}
 			}
 		}
 	}
-	
-	public void draw(Graphics2D graph2D) {
-		BufferedImage image = null;
-		switch(direction) {
-		case UP:
-			if(spriteNumber == 1) {
-				image = up1;
+	public void interactNPC(int i) {
+		if(i!=999) {
+			if (keyHandler.interactPressed) {
+				gamePanel.gameState = gamePanel.dialogueState;
+				gamePanel.npc[i].speak();
 			}
-			else if(spriteNumber == 2) {
-				image = up2;
-			}
-			break;
-		case DOWN:
-			if(spriteNumber == 1) {
-				image = down1;
-			}
-			else if(spriteNumber == 2) {
-				image = down2;
-			}
-			break;
-		case LEFT:
-			if(spriteNumber == 1) {
-				image = left1;
-			}
-			else if(spriteNumber == 2) {
-				image = left2;
-			}
-			break;
-		case RIGHT:
-			if(spriteNumber == 1) {
-				image = right1;
-			}
-			else if(spriteNumber == 2) {
-				image = right2;
-			}
-			break;
-		case UP_LEFT:
-			if(spriteNumber == 1) {
-				image = up1;
-			}
-			else if(spriteNumber == 2) {
-				image = up2;
-			}
-			break;
-		case UP_RIGHT:
-			if(spriteNumber == 1) {
-				image = up1;
-			}
-			else if(spriteNumber == 2) {
-				image = up2;
-			}
-			break;
-		case DOWN_LEFT:
-			if(spriteNumber == 1) {
-				image = down1;
-			}
-			else if(spriteNumber == 2) {
-				image = down2;
-			}
-			break;
-		case DOWN_RIGHT:
-			if(spriteNumber == 1) {
-				image = down1;
-			}
-			else if(spriteNumber == 2) {
-				image = down2;
-			}
-			break;
-		default:
-			break;
 		}
-		graph2D.drawImage(image, screenX, screenY, null);
+		gamePanel.keyHandler.interactPressed = false;
 	}
 }
