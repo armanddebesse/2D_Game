@@ -2,13 +2,12 @@ package tile;
 
 import java.awt.Graphics2D;
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
 import javax.imageio.ImageIO;
-
 import main.GamePanel;
+import main.UtilityTool;
 
 public class TileManager {
 	GamePanel gamePanel;
@@ -25,28 +24,24 @@ public class TileManager {
 	}
 	
 	public void getTileImage () {
+		setup(0, "grass", false);
+		setup(1, "tree", true);
+		setup(2, "water", true);
+		setup(3, "sand", false);
+		setup(4, "earth", false);
+		setup(5, "wall", true);
+	}
+	
+	public void setup(int index, String imageName, boolean hasCollision) {
+		UtilityTool uTool = new UtilityTool();
+		
 		try {
-			tiles[0] = new Tile();
-			tiles[0].image = ImageIO.read(getClass().getResourceAsStream("/tiles/grass.png"));
+			tiles[index] = new Tile();
+			tiles[index].image = ImageIO.read(getClass().getResourceAsStream("/tiles/"+imageName+".png"));
+			tiles[index].image = uTool.scaleImage(tiles[index].image, gamePanel.tileSize, gamePanel.tileSize);
+			tiles[index].collision = hasCollision;
 			
-			tiles[1] = new Tile();
-			tiles[1].image = ImageIO.read(getClass().getResourceAsStream("/tiles/tree.png"));
-			tiles[1].collision = true;
-			
-			tiles[2] = new Tile();
-			tiles[2].image = ImageIO.read(getClass().getResourceAsStream("/tiles/water.png"));
-			tiles[2].collision = true;
-			
-			tiles[3] = new Tile();
-			tiles[3].image = ImageIO.read(getClass().getResourceAsStream("/tiles/sand.png"));
-			
-			tiles[4] = new Tile();
-			tiles[4].image = ImageIO.read(getClass().getResourceAsStream("/tiles/earth.png"));
-			
-			tiles[5] = new Tile();
-			tiles[5].image = ImageIO.read(getClass().getResourceAsStream("/tiles/wall.png"));
-			tiles[5].collision = true;
-		}catch(IOException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
@@ -79,7 +74,7 @@ public class TileManager {
 			reader.close();
 		}
 		catch(Exception e) {
-			
+			e.printStackTrace();
 		}
 	}
 	
@@ -101,7 +96,7 @@ public class TileManager {
 				worldY + gamePanel.tileSize > gamePanel.player.worldY - gamePanel.player.screenY &&
 				worldY - gamePanel.tileSize < gamePanel.player.worldY + gamePanel.player.screenY) {
 				
-				graph2D.drawImage(tiles[tileNumber].image, screenX, screenY, gamePanel.tileSize, gamePanel.tileSize, null);
+				graph2D.drawImage(tiles[tileNumber].image, screenX, screenY, null);
 			}
 			worldCol++;
 			

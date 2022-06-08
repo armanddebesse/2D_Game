@@ -1,6 +1,7 @@
 package entity;
 
 import main.KeyHandler;
+import main.UtilityTool;
 
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
@@ -26,7 +27,9 @@ public class Player extends Entity{
 		screenX = gamePanel.screenWidth/2 - gamePanel.tileSize/2;
 		screenY = gamePanel.screenHeight/2 - gamePanel.tileSize/2;
 		
-		solidArea = new Rectangle(8, 16, 32, 32);
+		solidArea = new Rectangle(8, 12, 28, 28);
+		solidAreaDefaultX = solidArea.x;
+		solidAreaDefaultY = solidArea.y;
 		
 		setDefaultValues();
 		getPlayerImage();
@@ -35,23 +38,31 @@ public class Player extends Entity{
 	public void setDefaultValues() {
 		worldX = gamePanel.tileSize * 8;
 		worldY = gamePanel.tileSize * 20;
-		speed = 2;
+		speed = 4;
 		direction = Direction.DOWN;
 	}
 	
 	public void getPlayerImage() {
+		up1 = setup("boy_up_1");
+		up2 = setup("boy_up_2");
+		down1 = setup("boy_down_1");
+		down2 = setup("boy_down_2");
+		right1 = setup("boy_right_1");
+		right2 = setup("boy_right_2");
+		left1 = setup("boy_left_1");
+		left2 = setup("boy_left_2");
+	}
+	
+	public BufferedImage setup(String imageName) {
+		UtilityTool uTool = new UtilityTool();
+		BufferedImage image = null;
 		try {
-			up1 = ImageIO.read(getClass().getResourceAsStream("/player/boy_up_1.png"));
-			up2 = ImageIO.read(getClass().getResourceAsStream("/player/boy_up_2.png"));
-			down1 = ImageIO.read(getClass().getResourceAsStream("/player/boy_down_1.png"));
-			down2 = ImageIO.read(getClass().getResourceAsStream("/player/boy_down_2.png"));
-			right1 = ImageIO.read(getClass().getResourceAsStream("/player/boy_right_1.png"));
-			right2 = ImageIO.read(getClass().getResourceAsStream("/player/boy_right_2.png"));
-			left1 = ImageIO.read(getClass().getResourceAsStream("/player/boy_left_1.png"));
-			left2 = ImageIO.read(getClass().getResourceAsStream("/player/boy_left_2.png"));
-		}catch(IOException e) {
+			image = ImageIO.read(getClass().getResourceAsStream("/player/"+imageName+".png"));
+			image =  uTool.scaleImage(image, gamePanel.tileSize, gamePanel.tileSize);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		return image;
 	}
 	
 	public void update() {
@@ -74,6 +85,9 @@ public class Player extends Entity{
 			collisionOn = false;
 			gamePanel.collisionHandler.checkTile(this);
 			
+			//CHECK OBJECT COLLISION
+			pickUpObject(gamePanel.collisionHandler.checkObject(this, true));
+			
 			//IF COLLISION IS FALSE PLAYER CAN MOVE
 			if (!collisionOn) {
 				switch(direction) {
@@ -93,7 +107,7 @@ public class Player extends Entity{
 			}
 			
 			spriteCounter++;
-			if(spriteCounter > 20) {
+			if(spriteCounter > 10) {
 				if(spriteNumber == 1) {
 					spriteNumber = 2;
 				}
@@ -104,6 +118,12 @@ public class Player extends Entity{
 			}
 		}
 		
+	}
+	
+	public void pickUpObject(int index) {
+		if (index != 999) {
+
+		}
 	}
 	
 	public void draw(Graphics2D graph2D) {
@@ -145,6 +165,6 @@ public class Player extends Entity{
 		default:
 			break;
 		}
-		graph2D.drawImage(image, screenX, screenY, gamePanel.tileSize, gamePanel.tileSize, null);
+		graph2D.drawImage(image, screenX, screenY, null);
 	}
 }
