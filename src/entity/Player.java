@@ -165,6 +165,25 @@ public class Player extends Entity{
 		default:
 			break;
 		}
-		graph2D.drawImage(image, screenX, screenY, null);
+		
+		int x = screenX;
+		int y = screenY;
+		
+		if (screenX > worldX) {
+			x = worldX;
+		}
+		if (screenY > worldY) {
+			y = worldY;
+		}
+		int rightOffset = gamePanel.screenWidth - screenX;
+		if (rightOffset > gamePanel.worldWidth - worldX) {
+			x = gamePanel.screenWidth - (gamePanel.worldWidth - worldX);
+		}
+		int bottomOffset = gamePanel.screenHeight - screenY;
+		if (bottomOffset > gamePanel.worldHeight - worldY) {
+			y = gamePanel.screenHeight - (gamePanel.worldWidth - worldY);
+		}
+		
+		graph2D.drawImage(image, x, y, null);
 	}
 }
