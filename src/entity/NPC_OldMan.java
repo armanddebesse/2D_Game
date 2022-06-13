@@ -8,7 +8,7 @@ public class NPC_OldMan extends Entity{
 
 	public NPC_OldMan(GamePanel gamePanel) {
 		super(gamePanel);
-		direction = Direction.DOWN;
+		direction = "DOWN";
 		speed = 1;
 		
 		getImage();
@@ -39,16 +39,16 @@ public class NPC_OldMan extends Entity{
 			Random random = new Random();
 			int i = random.nextInt(100)+1;
 			if (i <= 25) {
-				direction = Direction.UP;
+				direction = "UP";
 			}
 			if (i>25 && i<=50) {
-				direction= Direction.DOWN;
+				direction= "DOWN";
 			}
 			if (i>50 && i<=75) {
-				direction= Direction.LEFT;
+				direction= "LEFT";
 			}
 			if (i>75&& i<=100) {
-				direction = Direction.RIGHT;
+				direction = "RIGHT";
 			}
 			actionLockCounter = 0;
 		}

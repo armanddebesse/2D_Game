@@ -16,7 +16,7 @@ public abstract class Entity {
 	public double speed;
 	public int actionLockCounter = 0;
 	public BufferedImage up1, up2, down1, down2, left1, left2, right1, right2;
-	public Direction direction;
+	public String direction;
 	
 	public int spriteCounter = 0;
 	public int spriteNumber = 1;
@@ -26,6 +26,11 @@ public abstract class Entity {
 	String dialogues[] = new String[20];
 	int dialogueIndex = 0;
 
+	
+	// CHARACTER STATUS
+	public int maxLife;
+	public int life;
+	
 	public Entity(GamePanel gamePanel) {
 	this.gamePanel = gamePanel;
 	}
@@ -51,14 +56,14 @@ public abstract class Entity {
 		dialogueIndex ++;
 		
 		switch (gamePanel.player.direction) {
-		case UP:direction = Direction.DOWN;break;
-		case DOWN:direction = Direction.UP;break;
-		case LEFT:direction = Direction.RIGHT;break;
-		case RIGHT:direction = Direction.LEFT;break;
-		case UP_LEFT:direction = Direction.DOWN;break;
-		case UP_RIGHT:direction = Direction.DOWN;break;
-		case DOWN_LEFT:direction = Direction.UP;break;
-		case DOWN_RIGHT:direction = Direction.UP;break;
+		case "UP":direction = "DOWN";break;
+		case "DOWN":direction = "UP";break;
+		case "LEFT":direction = "RIGHT";break;
+		case "RIGHT":direction = "LEFT";break;
+		case "UP_LEFT":direction = "DOWN";break;
+		case "UP_RIGHT":direction = "DOWN";break;
+		case "DOWN_LEFT":direction = "UP";break;
+		case "DOWN_RIGHT":direction = "UP";break;
 		
 		}
 	}
@@ -71,14 +76,14 @@ public abstract class Entity {
 		//IF COLLISION IS FALSE, PLAYER CAN MOVE
 		if(collisionOn == false) {
 			switch(direction) {
-			case UP:worldY -= speed;break;
-			case DOWN:worldY += speed;break;
-			case LEFT:worldX -= speed;break;
-			case RIGHT:worldX += speed;break;
-			case UP_LEFT:worldY -= speed/1.5;worldX -= speed/1.5;break;
-			case UP_RIGHT:worldY -= speed/1.5;worldX += speed/1.5;break;
-			case DOWN_LEFT:worldY += speed/1.5;worldX -= speed/1.5;break;
-			case DOWN_RIGHT:worldY += speed/1.5;worldX += speed/1.5;break;
+			case "UP":worldY -= speed;break;
+			case "DOWN":worldY += speed;break;
+			case "LEFT":worldX -= speed;break;
+			case "RIGHT":worldX += speed;break;
+			case "UP_LEFT":worldY -= speed/1.5;worldX -= speed/1.5;break;
+			case "UP_RIGHT":worldY -= speed/1.5;worldX += speed/1.5;break;
+			case "DOWN_LEFT":worldY += speed/1.5;worldX -= speed/1.5;break;
+			case "DOWN_RIGHT":worldY += speed/1.5;worldX += speed/1.5;break;
 			}	
 		}
 		spriteCounter++;
@@ -104,7 +109,7 @@ public abstract class Entity {
 				worldY - gamePanel.tileSize < gamePanel.player.worldY + gamePanel.player.screenY) {
 			
 			switch(direction) {
-			case UP:
+			case "UP":
 				if(spriteNumber == 1) {
 					image = up1;
 				}
@@ -112,7 +117,7 @@ public abstract class Entity {
 					image = up2;
 				}
 				break;
-			case DOWN:
+			case "DOWN":
 				if(spriteNumber == 1) {
 					image = down1;
 				}
@@ -120,7 +125,7 @@ public abstract class Entity {
 					image = down2;
 				}
 				break;
-			case LEFT:
+			case "LEFT":
 				if(spriteNumber == 1) {
 					image = left1;
 				}
@@ -128,7 +133,7 @@ public abstract class Entity {
 					image = left2;
 				}
 				break;
-			case RIGHT:
+			case "RIGHT":
 				if(spriteNumber == 1) {
 					image = right1;
 				}
@@ -136,7 +141,7 @@ public abstract class Entity {
 					image = right2;
 				}
 				break;
-			case UP_LEFT:
+			case "UP_LEFT":
 				if(spriteNumber == 1) {
 					image = up1;
 				}
@@ -144,7 +149,7 @@ public abstract class Entity {
 					image = up2;
 				}
 				break;
-			case UP_RIGHT:
+			case "UP_RIGHT":
 				if(spriteNumber == 1) {
 					image = up1;
 				}
@@ -152,7 +157,7 @@ public abstract class Entity {
 					image = up2;
 				}
 				break;
-			case DOWN_LEFT:
+			case "DOWN_LEFT":
 				if(spriteNumber == 1) {
 					image = down1;
 				}
@@ -160,7 +165,7 @@ public abstract class Entity {
 					image = down2;
 				}
 				break;
-			case DOWN_RIGHT:
+			case "DOWN_RIGHT":
 				if(spriteNumber == 1) {
 					image = down1;
 				}

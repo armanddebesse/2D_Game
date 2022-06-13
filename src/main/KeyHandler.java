@@ -20,7 +20,68 @@ public class KeyHandler implements KeyListener{
 	@Override
 	public void keyPressed(KeyEvent e) {
 		int keyCode = e.getKeyCode();
-		if(gamePanel.gameState==gamePanel.playState) {
+		if(gamePanel.gameState==gamePanel.titleState) {
+			if(gamePanel.ui.titleScreenState == 0) {
+				if(keyCode == KeyEvent.VK_Z) {
+					gamePanel.ui.commandNum --;
+					if (gamePanel.ui.commandNum < 0) {
+						gamePanel.ui.commandNum = 2;
+					}
+				}
+				if(keyCode == KeyEvent.VK_S) {
+					gamePanel.ui.commandNum ++;
+					if (gamePanel.ui.commandNum > 2) {
+						gamePanel.ui.commandNum = 0;
+					}
+				}
+				if(keyCode == KeyEvent.VK_F) {
+					if (gamePanel.ui.commandNum == 0) {
+						gamePanel.ui.titleScreenState = 1;
+						//gamePanel.playMusic(0);
+					}
+					if (gamePanel.ui.commandNum == 1) {
+						// add later
+					}
+					if (gamePanel.ui.commandNum == 2) {
+						System.exit(0);	
+					}
+				}
+			}
+			else if (gamePanel.ui.titleScreenState == 1) {
+				if(keyCode == KeyEvent.VK_Z) {
+					gamePanel.ui.commandNum --;
+					if (gamePanel.ui.commandNum < 0) {
+						gamePanel.ui.commandNum = 3;
+					}
+				}
+				if(keyCode == KeyEvent.VK_S) {
+					gamePanel.ui.commandNum ++;
+					if (gamePanel.ui.commandNum > 3) {
+						gamePanel.ui.commandNum = 0;
+					}
+				}
+				if(keyCode == KeyEvent.VK_F) {
+					if (gamePanel.ui.commandNum == 0) {
+						gamePanel.gameState = gamePanel.playState;
+						gamePanel.playMusic(0);
+					}
+					if (gamePanel.ui.commandNum == 1) {
+						gamePanel.gameState = gamePanel.playState;
+						gamePanel.playMusic(0);
+					}
+					if (gamePanel.ui.commandNum == 2) {
+						gamePanel.gameState = gamePanel.playState;
+						gamePanel.playMusic(0);
+					}
+					if (gamePanel.ui.commandNum == 3) {
+						gamePanel.ui.commandNum = 0;
+						gamePanel.ui.titleScreenState = 0;	
+					}
+				}
+			}
+		}
+	
+		else if(gamePanel.gameState==gamePanel.playState) {
 			if(keyCode == KeyEvent.VK_Z) {
 				upPressed = true;
 			}

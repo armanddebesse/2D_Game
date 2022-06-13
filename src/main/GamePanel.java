@@ -40,6 +40,7 @@ public class GamePanel extends JPanel implements Runnable{
 	public CollisionChecker collisionChecker = new CollisionChecker(this);
 	public AssetSetter assetSetter = new AssetSetter(this);
 	public UI ui = new UI(this);
+	public EventHandler eventHandler = new EventHandler(this);
 	Thread gameThread;
 	
 	// ENTITY AND OBJECT
@@ -49,6 +50,7 @@ public class GamePanel extends JPanel implements Runnable{
 	
 	// GAME STATE
 	public int gameState;
+	public final int titleState = 0;
 	public final int playState = 1;
 	public final int pauseState = 2;
 	public final int dialogueState = 3;
@@ -64,8 +66,8 @@ public class GamePanel extends JPanel implements Runnable{
 	public void setupGame() {
 		assetSetter.setObject();
 		assetSetter.setNPC();
-		playMusic(0);
-		gameState = playState;
+		//playMusic(0);
+		gameState = titleState;
 	}
 	
 	public void startGameThread() {
@@ -116,31 +118,39 @@ public class GamePanel extends JPanel implements Runnable{
 		super.paintComponent(graph);
 		Graphics2D graph2D = (Graphics2D)graph;
 		
-		// TILE
-		tileManager.draw(graph2D);
-		
-		// OBJECT
-		for(int i = 0; i < obj.length; i++) {	
-			if(obj[i] != null) {
-				obj[i].draw(graph2D, this);
-			}
+		// TITLE SCREEN
+		if (gameState == titleState) {
+			ui.draw(graph2D);
 		}
 		
-		// PLAYER
-		player.draw(graph2D);
+		// OTHERS
+		else {
+			// TILE
+			tileManager.draw(graph2D);
+			
+			// OBJECT
+			for(int i = 0; i < obj.length; i++) {	
+				if(obj[i] != null) {
+					obj[i].draw(graph2D, this);
+				}
+			}
+			
+			// PLAYER
+			player.draw(graph2D);
 
-		
-		// NPC
-		for (int i = 0; i < npc.length; i++) {
-			if (npc[i]!=null) {
-				npc[i].draw(graph2D);
+			
+			// NPC
+			for (int i = 0; i < npc.length; i++) {
+				if (npc[i]!=null) {
+					npc[i].draw(graph2D);
+				}
 			}
+			
+			// UI
+			ui.draw(graph2D);
+			
 		}
-		
-		// UI
-		ui.draw(graph2D);
-		
-		graph2D.dispose();
+		graph2D.dispose();			
 	}
 	
 	public void playMusic(int i) {
