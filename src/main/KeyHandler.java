@@ -106,11 +106,10 @@ public class KeyHandler implements KeyListener{
 				gamePanel.gameState = gamePanel.playState;
 			}	
 		}
-		else if(gamePanel.gameState==gamePanel.dialogueState) {
+		else if (gamePanel.gameState == gamePanel.dialogueState) {
 			if(keyCode == KeyEvent.VK_F) {
 				gamePanel.gameState = gamePanel.playState;
-				interactPressed = true;
-			}	
+			}
 		}
 	}
 		

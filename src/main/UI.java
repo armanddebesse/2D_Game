@@ -91,7 +91,7 @@ public class UI {
 	private void drawPlayerLife() {
 		int x = gamePanel.tileSize/2;
 		int y = gamePanel.tileSize/2;
-		int i = 0;
+		int	 i = 0;
 		
 		while (i < gamePanel.player.maxLife/2) {
 			graph2D.drawImage(heart_blank, x, y, null);

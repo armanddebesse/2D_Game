@@ -19,11 +19,11 @@ GamePanel gamePanel;
 		
 		gamePanel.obj[1] = new OBJ_Door(gamePanel);
 		gamePanel.obj[1].worldX = 10 * gamePanel.tileSize;
-		gamePanel.obj[1].worldY = 11 * gamePanel.tileSize;
+		gamePanel.obj[1].worldY = 12 * gamePanel.tileSize;
 		
 		gamePanel.obj[2] = new OBJ_Chest(gamePanel);
 		gamePanel.obj[2].worldX = 10 * gamePanel.tileSize;
-		gamePanel.obj[2].worldY = 7 * gamePanel.tileSize;
+		gamePanel.obj[2].worldY = 8 * gamePanel.tileSize;
 		
 		gamePanel.obj[3] = new OBJ_Boots(gamePanel);
 		gamePanel.obj[3].worldX = 37 * gamePanel.tileSize;

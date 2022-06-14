@@ -50,7 +50,6 @@ public abstract class Entity {
 	public void speak() {
 		if (dialogues[dialogueIndex] == null) {
 			dialogueIndex = 0;
-			gamePanel.gameState = gamePanel.playState;
 		}
 		gamePanel.ui.currentDialogue = dialogues[dialogueIndex];
 		dialogueIndex ++;

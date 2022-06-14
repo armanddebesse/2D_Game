@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
 import java.util.Iterator;
 
 import javax.swing.JPanel;
@@ -20,14 +21,20 @@ public class GamePanel extends JPanel implements Runnable{
 	final int scale = 3;
 	
 	public int tileSize = originalTileSize * scale;
-	public int maxScreenCol = 24;
-	public int maxScreenRow = 16;
+	public int maxScreenCol = 20;
+	public int maxScreenRow = 12;
 	public int screenWidth = tileSize * maxScreenCol;
 	public int screenHeight = tileSize * maxScreenRow;
 	
-	//WORLD SETTINGS
+	// WORLD SETTINGS
 	public final int maxWorldCol = 50;
 	public final int maxWorldRow = 50;
+	
+	// FULL SCREEN MODE
+	int screenWidth2 = screenWidth;
+	int screeHeight2 = screenHeight;
+	BufferedImage tempScreen;
+	Graphics2D graph2D;
 	
 	// FPS
 	int FPS = 120;
@@ -68,6 +75,9 @@ public class GamePanel extends JPanel implements Runnable{
 		assetSetter.setNPC();
 		//playMusic(0);
 		gameState = titleState;
+		
+		tempScreen = new BufferedImage(screenWidth2, screeHeight2, BufferedImage.TYPE_INT_ARGB);
+		graph2D = (Graphics2D)tempScreen.getGraphics();
 	}
 	
 	public void startGameThread() {
@@ -113,7 +123,9 @@ public class GamePanel extends JPanel implements Runnable{
 		}
 	}
 	
-	
+	public void drawToTempScreen() {
+		
+	}
 	public void paintComponent(Graphics graph) {
 		super.paintComponent(graph);
 		Graphics2D graph2D = (Graphics2D)graph;

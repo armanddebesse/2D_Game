@@ -60,23 +60,24 @@ public class Player extends Entity{
 	public void update() {
 		
 		// CHECK TILE COLLISION
-		collisionOn = false;
-		gamePanel.collisionChecker.checkTile(this);
+					collisionOn = false;
+					gamePanel.collisionChecker.checkTile(this);
+								
+					// CHECK OBJECT COLLISION
+					int objIndex = gamePanel.collisionChecker.checkObject(this, true);
+					pickUpObject(objIndex);
 					
-		// CHECK OBJECT COLLISION
-		int objIndex = gamePanel.collisionChecker.checkObject(this, true);
-		
-		// CHECK NPC COLLISION
-		int npcIndex = gamePanel.collisionChecker.checkEntity(this, gamePanel.npc);
-		
-		// INTERACTION
-		
-		pickUpObject(objIndex);
-		interactNPC(npcIndex);
-		
-		// MOVEMENT
-		if(keyHandler.upPressed || keyHandler.downPressed || keyHandler.leftPressed || keyHandler.rightPressed) {
+					// CHECK NPC COLLISION
+					int npcIndex = gamePanel.collisionChecker.checkEntity(this, gamePanel.npc);
+					interactNPC(npcIndex);
+					
+					// CHECK EVENT
+					gamePanel.eventHandler.checkEvent();			
+					
+					gamePanel.keyHandler.interactPressed = false;
 
+		if(keyHandler.upPressed || keyHandler.downPressed || keyHandler.leftPressed || keyHandler.rightPressed) {
+			// DIRECTION
 			if(keyHandler.upPressed && !keyHandler.downPressed && !keyHandler.leftPressed && !keyHandler.rightPressed) {
 				direction = "UP";
 			}
@@ -102,8 +103,7 @@ public class Player extends Entity{
 				direction = "DOWN_RIGHT";
 			}
 			else {;}
-			
-			
+
 			//IF COLLISION IS FALSE, PLAYER CAN MOVE
 			if(collisionOn == false) {
 				switch(direction) {
@@ -175,6 +175,5 @@ public class Player extends Entity{
 				gamePanel.npc[i].speak();
 			}
 		}
-		gamePanel.keyHandler.interactPressed = false;
 	}
 }
