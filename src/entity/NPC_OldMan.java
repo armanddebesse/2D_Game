@@ -2,13 +2,14 @@ package entity;
 
 import java.util.Random;
 
+import enums.Direction;
 import main.GamePanel;
 
 public class NPC_OldMan extends Entity{
 
 	public NPC_OldMan(GamePanel gamePanel) {
 		super(gamePanel);
-		direction = "DOWN";
+		direction = Direction.DOWN;
 		speed = 1;
 		
 		getImage();
@@ -39,16 +40,16 @@ public class NPC_OldMan extends Entity{
 			Random random = new Random();
 			int i = random.nextInt(100)+1;
 			if (i <= 25) {
-				direction = "UP";
+				direction = Direction.UP;
 			}
 			if (i>25 && i<=50) {
-				direction= "DOWN";
+				direction = Direction.DOWN;
 			}
 			if (i>50 && i<=75) {
-				direction= "LEFT";
+				direction = Direction.LEFT;
 			}
 			if (i>75&& i<=100) {
-				direction = "RIGHT";
+				direction = Direction.RIGHT;
 			}
 			actionLockCounter = 0;
 		}

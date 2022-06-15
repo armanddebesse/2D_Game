@@ -6,6 +6,7 @@ import java.awt.Rectangle;
 
 import javax.swing.event.ListDataEvent;
 
+import enums.Direction;
 import main.GamePanel;
 
 public class Player extends Entity{
@@ -39,7 +40,7 @@ public class Player extends Entity{
 		worldX = gamePanel.tileSize * 23;
 		worldY = gamePanel.tileSize * 21;
 		speed = 2;// gamePanel.tileSize * gamePanel.maxWorldCol/1200;
-		direction = "DOWN";
+		direction = Direction.DOWN;
 		
 		// PLAYER STATUS
 		maxLife = 6;
@@ -79,42 +80,42 @@ public class Player extends Entity{
 		if(keyHandler.upPressed || keyHandler.downPressed || keyHandler.leftPressed || keyHandler.rightPressed) {
 			// DIRECTION
 			if(keyHandler.upPressed && !keyHandler.downPressed && !keyHandler.leftPressed && !keyHandler.rightPressed) {
-				direction = "UP";
+				direction = Direction.UP;
 			}
 			else if(!keyHandler.upPressed && keyHandler.downPressed && !keyHandler.leftPressed && !keyHandler.rightPressed) {
-				direction = "DOWN";
+				direction = Direction.DOWN;
 			}
 			else if(!keyHandler.upPressed && !keyHandler.downPressed && keyHandler.leftPressed && !keyHandler.rightPressed) {
-				direction = "LEFT";
+				direction = Direction.LEFT;
 			}
 			else if(!keyHandler.upPressed && !keyHandler.downPressed && !keyHandler.leftPressed && keyHandler.rightPressed) {
-				direction = "RIGHT";
+				direction = Direction.RIGHT;
 			}
 			else if(keyHandler.upPressed && !keyHandler.downPressed && keyHandler.leftPressed && !keyHandler.rightPressed) {
-				direction = "UP_LEFT";
+				direction = Direction.UP_LEFT;
 			}
 			else if(keyHandler.upPressed && !keyHandler.downPressed && !keyHandler.leftPressed && keyHandler.rightPressed) {
-				direction = "UP_RIGHT";
+				direction = Direction.UP_RIGHT;
 			}
 			else if(!keyHandler.upPressed && keyHandler.downPressed && keyHandler.leftPressed && !keyHandler.rightPressed) {
-				direction = "DOWN_LEFT";
+				direction = Direction.DOWN_LEFT;
 			}
 			else if(!keyHandler.upPressed && keyHandler.downPressed && !keyHandler.leftPressed && keyHandler.rightPressed) {
-				direction = "DOWN_RIGHT";
+				direction = Direction.DOWN_RIGHT;
 			}
 			else {;}
 
 			//IF COLLISION IS FALSE, PLAYER CAN MOVE
 			if(collisionOn == false) {
 				switch(direction) {
-				case "UP":worldY -= speed;break;
-				case "DOWN":worldY += speed;break;
-				case "LEFT":worldX -= speed;break;
-				case "RIGHT":worldX += speed;break;
-				case "UP_LEFT":worldY -= speed/1.5;worldX -= speed/1.5;break;
-				case "UP_RIGHT":worldY -= speed/1.5;worldX += speed/1.5;break;
-				case "DOWN_LEFT":worldY += speed/1.5;worldX -= speed/1.5;break;
-				case "DOWN_RIGHT":worldY += speed/1.5;worldX += speed/1.5;break;
+				case UP:worldY -= speed;break;
+				case DOWN:worldY += speed;break;
+				case LEFT:worldX -= speed;break;
+				case RIGHT:worldX += speed;break;
+				case UP_LEFT:worldY -= speed/1.5;worldX -= speed/1.5;break;
+				case UP_RIGHT:worldY -= speed/1.5;worldX += speed/1.5;break;
+				case DOWN_LEFT:worldY += speed/1.5;worldX -= speed/1.5;break;
+				case DOWN_RIGHT:worldY += speed/1.5;worldX += speed/1.5;break;
 				}	
 			}
 			
