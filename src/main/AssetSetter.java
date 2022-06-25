@@ -1,6 +1,7 @@
 package main;
 
 import entity.NPC_OldMan;
+import monster.MON_GreenSlime;
 import object.OBJ_Boots;
 import object.OBJ_Chest;
 import object.OBJ_Door;
@@ -34,6 +35,12 @@ GamePanel gamePanel;
 	public void setNPC() {
 		gamePanel.npc[0]= new NPC_OldMan(gamePanel);
 		gamePanel.npc[0].worldX = gamePanel.tileSize*38;
-		gamePanel.npc[0].worldY = gamePanel.tileSize*8;;
+		gamePanel.npc[0].worldY = gamePanel.tileSize*8;
+	}
+	
+	public void setMonster() {
+		gamePanel.monster[0]= new MON_GreenSlime(gamePanel);
+		gamePanel.monster[0].worldX = gamePanel.tileSize*23;
+		gamePanel.monster[0].worldY = gamePanel.tileSize*36f;
 	}
 }

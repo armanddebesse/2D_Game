@@ -11,9 +11,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.text.DecimalFormat;
 
+import entity.Entity;
 import object.OBJ_Heart;
 import object.OBJ_Key;
-import object.SuperObject;
+
 
 public class UI {
 	GamePanel gamePanel;
@@ -46,7 +47,7 @@ public class UI {
 		OBJ_Key key = new OBJ_Key(gamePanel);
 		keyImage = key.image;
 		
-		SuperObject heart = new OBJ_Heart(gamePanel);
+		Entity heart = new OBJ_Heart(gamePanel);
 		heart_full = heart.image;
 		heart_half = heart.image2;
 		heart_blank = heart.image3;

@@ -3,28 +3,39 @@ package entity;
 import java.util.Random;
 
 import enums.Direction;
+import enums.Type;
 import main.GamePanel;
 
 public class NPC_OldMan extends Entity{
 
 	public NPC_OldMan(GamePanel gamePanel) {
 		super(gamePanel);
+		
+		type = Type.Npc;
+		
 		direction = Direction.DOWN;
 		speed = 1;
+		
+		solidArea.x = 0;
+		solidArea.y = 16;
+		solidArea.width = 48;
+		solidArea.height = 32;
+		solidAreaDefaultX = solidArea.x;
+		solidAreaDefaultY = solidArea.y;
 		
 		getImage();
 		setDialogue();
 	}
 	
 	public void getImage() {
-		up1 = setup("/npc/oldman_up_1");
-		up2 = setup("/npc/oldman_up_2");
-		down1 = setup("/npc/oldman_down_1");
-		down2 = setup("/npc/oldman_down_2");
-		right1 = setup("/npc/oldman_right_1");
-		right2 = setup("/npc/oldman_right_2");
-		left1 = setup("/npc/oldman_left_1");
-		left2 = setup("/npc/oldman_left_2");
+		up1 = setup("/npc/oldman_up_1", gamePanel.tileSize, gamePanel.tileSize);
+		up2 = setup("/npc/oldman_up_2", gamePanel.tileSize, gamePanel.tileSize);
+		down1 = setup("/npc/oldman_down_1", gamePanel.tileSize, gamePanel.tileSize);
+		down2 = setup("/npc/oldman_down_2", gamePanel.tileSize, gamePanel.tileSize);
+		right1 = setup("/npc/oldman_right_1", gamePanel.tileSize, gamePanel.tileSize);
+		right2 = setup("/npc/oldman_right_2", gamePanel.tileSize, gamePanel.tileSize);
+		left1 = setup("/npc/oldman_left_1", gamePanel.tileSize, gamePanel.tileSize);
+		left2 = setup("/npc/oldman_left_2", gamePanel.tileSize, gamePanel.tileSize);
 	}
 	public void setDialogue() {
 		dialogues[0] = "Hello, lad.";
