@@ -8,6 +8,7 @@ import java.util.Iterator;
 
 import javax.swing.JPanel;
 
+import entity.Entity;
 import entity.Player;
 import enums.GameState;
 import object.SuperObject;
@@ -40,13 +41,14 @@ public class GamePanel extends JPanel implements Runnable{
 	Sound music = new Sound();
 	Sound soundEffect = new Sound();
 	public CollisionHandler collisionHandler = new CollisionHandler(this);
-	public ObjectHandler objectHandler = new ObjectHandler(this);
+	public AssetSetter assetSetter = new AssetSetter(this);
 	public UI ui = new UI(this);
 	Thread gameThread;
 	
 	//ENTITY AND OBJET
 	public Player player = new Player(this, keyHandler);
 	public SuperObject obj[] = new SuperObject[10];
+	public Entity npc[] = new Entity[10];
 	
 	//GAME STATE
 	public GameState gameState;
@@ -62,7 +64,8 @@ public class GamePanel extends JPanel implements Runnable{
 	}
 	
 	public void setupGame() {
-		objectHandler.setObject();
+		assetSetter.setObject();
+		assetSetter.setNPC();
 		playMusic(0);
 		//gameState = GameState.playState;
 	}
@@ -97,6 +100,11 @@ public class GamePanel extends JPanel implements Runnable{
 		switch (gameState) {
 		case playState:
 			player.update();
+			for (Entity entity : npc) {
+				if (entity != null) {
+					entity.update();
+				}
+			}
 			break;
 		case pauseState:
 			
@@ -117,6 +125,12 @@ public class GamePanel extends JPanel implements Runnable{
 		for (SuperObject superObject : obj) {
 			if (superObject != null) {
 				superObject.draw(graph2D, this);
+			}
+		}
+		// NPC
+		for (Entity entity : npc) {
+			if (entity != null) {
+				entity.draw(graph2D);
 			}
 		}
 		
