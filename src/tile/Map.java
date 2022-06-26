@@ -40,7 +40,9 @@ public class Map {
 			}
 			
 			//LOAD TILES
-			JSONObject tileset = new JSONObject(Files.readString(Path.of("res/tilesets/tileset.json")));
+			String tilesetPath = map.getJSONArray("tilesets").getJSONObject(0).getString("source");
+			tilesetPath = "res/tilesets/" + tilesetPath.substring(tilesetPath.lastIndexOf("/")+1);
+			JSONObject tileset = new JSONObject(Files.readString(Path.of(tilesetPath)));
 			JSONArray tileJsonArray = tileset.getJSONArray("tiles");
 			
 			tiles = new Tile[tileset.getInt("tilecount")+1];
