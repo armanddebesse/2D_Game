@@ -2,8 +2,11 @@ package tile;
 
 import java.awt.Graphics2D;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 import javax.imageio.ImageIO;
 import main.GamePanel;
@@ -13,23 +16,27 @@ public class TileManager {
 	GamePanel gamePanel;
 	public Tile[] tiles;
 	public int mapTileNumber[][];
+	public Map map;
 	
 	public TileManager(GamePanel _gamePanel) {
 		this.gamePanel = _gamePanel;
 		
-		tiles = new Tile[6];
-		mapTileNumber = new int[gamePanel.maxWorldCol][gamePanel.maxWorldRow];
-		getTileImage();
-		loadMap("/maps/map02.txt");
+//		tiles = new Tile[6];
+//		mapTileNumber = new int[gamePanel.maxWorldCol][gamePanel.maxWorldRow];
+//		getTileImage();
+//		loadMap("/maps/map02.txt");
+		map = new Map("res/maps/map.json", gamePanel);
+		tiles = map.tiles;
+		mapTileNumber = map.data;
 	}
 	
 	public void getTileImage () {
 		setup(0, "grass", false);
-		setup(1, "tree", true);
-		setup(2, "water", true);
-		setup(3, "sand", false);
-		setup(4, "earth", false);
-		setup(5, "wall", true);
+		setup(1, "water", true);
+		setup(2, "tree", true);
+		setup(3, "part-Slice 13", false);
+		setup(4, "part-Slice 14", false);
+		setup(5, "part-Slice 15", true);
 	}
 	
 	public void setup(int index, String imageName, boolean hasCollision) {
@@ -47,6 +54,7 @@ public class TileManager {
 	}
 	
 	public void loadMap(String mapPath) {
+
 		try {
 			InputStream stream = getClass().getResourceAsStream(mapPath);
 			BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
