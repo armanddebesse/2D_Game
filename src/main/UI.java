@@ -3,11 +3,7 @@ package main;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
-import java.awt.image.BufferedImage;
 import java.text.DecimalFormat;
-
-import enums.GameState;
-import object.Key;
 
 public class UI {
 	GamePanel gamePanel;

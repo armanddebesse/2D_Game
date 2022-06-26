@@ -4,15 +4,13 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.util.Iterator;
-
 import javax.swing.JPanel;
 
 import entity.Entity;
 import entity.Player;
 import enums.GameState;
 import object.SuperObject;
-import tile.TileManager;
+import tile.Map;
 
 public class GamePanel extends JPanel implements Runnable{
 
@@ -36,7 +34,7 @@ public class GamePanel extends JPanel implements Runnable{
 	int FPS = 60;
 	
 	//SYSTEM
-	TileManager tileManager = new TileManager(this);
+	Map currentMap = new Map("res/maps/map.json", this);
 	KeyHandler keyHandler = new KeyHandler(this);
 	Sound music = new Sound();
 	Sound soundEffect = new Sound();
@@ -119,7 +117,7 @@ public class GamePanel extends JPanel implements Runnable{
 		Graphics2D graph2D = (Graphics2D)graph;
 		
 		//TILE
-		tileManager.draw(graph2D);
+		currentMap.draw(graph2D);
 		
 		//OBJECT
 		for (SuperObject superObject : obj) {
