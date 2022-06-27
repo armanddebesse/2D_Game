@@ -11,9 +11,9 @@ import java.util.Comparator;
 
 import javax.swing.JPanel;
 
-import Tile.TileManager;
 import entity.Entity;
 import entity.Player;
+import tile.Map;
 
 
 public class GamePanel extends JPanel implements Runnable{
@@ -31,6 +31,8 @@ public class GamePanel extends JPanel implements Runnable{
 	// WORLD SETTINGS
 	public final int maxWorldCol = 50;
 	public final int maxWorldRow = 50;
+	public final int worldWidth = tileSize * maxWorldCol;
+	public final int worldHeight = tileSize * maxWorldRow;
 	
 	// FULL SCREEN MODE
 	int screenWidth2 = screenWidth;
@@ -42,7 +44,7 @@ public class GamePanel extends JPanel implements Runnable{
 	int FPS = 120;
 	
 	// SYSTEM
-	TileManager tileManager = new TileManager(this);
+	Map currentMap = new Map("res/maps/map-test.json",this);
 	public KeyHandler keyHandler = new KeyHandler(this);
 	Sound music =  new Sound();
 	Sound soundEffect =  new Sound();
@@ -149,7 +151,7 @@ public class GamePanel extends JPanel implements Runnable{
 		// OTHERS
 		else {
 			// TILE
-			tileManager.draw(graph2D);
+			currentMap.draw(graph2D);
 			
 			// ADD ENTITIES TO THE LIST
 			entityList.add(player);
